@@ -35,7 +35,7 @@ export const getAllEvents = async () => {
 };
 
 export const BuyTicket = async (eventId, tokenUri, ticketPrice) => {
-  console.log("service", eventId,tokenUri, ticketPrice );
+  console.log("service", eventId,tokenUri.toString(), ticketPrice.toString() );
   if (!window.ethereum) {
     throw new Error("Ethereum object not found, install MetaMask.");
   }   
@@ -43,7 +43,7 @@ export const BuyTicket = async (eventId, tokenUri, ticketPrice) => {
   const signer = provider.getSigner();
   const contract = new ethers.Contract(contractAddress, Token, signer);
   try {
-    const eventData = await contract.createEvent(eventId, tokenUri,{value: ticketPrice});
+    const eventData = await contract.purchaseTicket(eventId, tokenUri,{value: ticketPrice});
     return eventData;
   } catch (error) {
     console.error("Error creating event:", error);
